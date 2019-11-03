@@ -1,0 +1,46 @@
+{
+  "workbench.iconTheme": "simple-icons",
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "workbench.colorCustomizations": {
+    "editorCursor.foreground": "#ffff00",
+    "terminalCursor.foreground": "#ffff00"
+  },
+  "window.zoomLevel": -1,
+  "liveServer.settings.CustomBrowser": "chrome",
+  "files.autoSave": "off",
+  "files.eol": "\n",
+  "editor.renderWhitespace": "none",
+  "editor.renderControlCharacters": false,
+  "breadcrumbs.enabled": true,
+  "editor.wordWrap": "on",
+  "html.format.wrapLineLength": 100,
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "expanded",
+      "extensionName": ".css",
+      "savePath": "/dist/styles"
+    }
+  ],
+  "prettier.endOfLine": "lf",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.autoFixOnSave": true,
+  "prettier.disableLanguages": [
+    "vue",
+    "html"
+  ],
+  "html.format.wrapAttributes": "aligned-multiple",
+  "eslint.alwaysShowStatus": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "prettier.bracketSpacing": false,
+  "editor.fontSize": 13,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "plaintext": "html"
+  },
+}
