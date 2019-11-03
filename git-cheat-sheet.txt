@@ -1,0 +1,99 @@
+git help log
+git help config
+
+git config --global user.name "Gregg Pollack"
+git config --global user.email "gregg@gmail.com
+git config --global color.ui true
+
+mkdir store
+cd store
+
+git init
+
+git status
+git add <file name>
+git commit -m "Create a README"
+
+git diff
+git diff --staged
+
+git reset HEAD <file name>
+git checkout -- <file name>
+
+// go back one commit, put changes into changes
+git reset --soft HEAD^
+
+cat -v <file name>
+
+//hard reset undo last commit
+git reset --hard HEAD^
+
+//hard reset undo last 2 commit
+git reset --hard HEAD^^
+
+// overwrite last commit
+git commit --amend -m "Modified commit"
+
+git remote add origin https://github.com/some/some.git
+git remote -v
+
+git pull
+
+cat -A src/main.js
+
+git config --list
+
+***********************************
+надо форкнуть репозиторий
+
+Oleksandr Mos  1 day ago
+и по новому все создавать ?
+
+yurii.holiuk:ma:  1 day ago
+@Oleksandr Mos  можна форкнути, а тоді виконати команду git remote --set-url your_repo_url і пушити, не роблячи нічого заново
+*******************************
+
+git remote set-url 
+
+//VIM save and quit
+:wq
+
+//Heroku
+
+// Referrence log
+git reflog
+
+// ********************************
+
+Алгоритм дій:
+1. Створюєте новий репозиторій
+2. Клонуєте репозиторій який я скинув
+3. Копіюєте посилання на свій репозиторій(який ви створили в п.1)
+4. Виконуєте команду git remote set-url origin <your_repo_url>
+5. git push -u origin master
+6. Створюєте гілку develop(git checkout -b develop)
+7. Працюєте як звично(змінюєте файли, add, commit, push)
+8. Робите пул реквест з develop в master
+9. Додаєте його в табличку
+
+//********************************
+//для деплоя
+git stash && npm run build && git add -f dist && git commit -m "build" && git push --delete origin gh-pages && git subtree push --prefix dist origin gh-pages && git reset HEAD~ --hard && git stash pop
+
+// Щоб додати файли які знаходяться в .gitignore
+git add -f
+
+// Удалить файлы с кеш зоны
+git rm -r --cached <folder>
+
+//
+git commit -m"<message>" --no-verify
+
+// если в гитигноер дист так можно добавить 
+git add -f dist
+
+// запушити тілки dist у gh-pages
+git subtree push --prefix dist origin gh-pages
+
+// в самых редки случаях форс пуш, удалит все фалйлы с удаленного и заменит на локальные
+git push -f origin master
