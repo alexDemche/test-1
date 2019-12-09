@@ -1,0 +1,661 @@
+//$name: 'promotions';
+//
+//.#{$name} {
+//	+ .home__section-promo {
+//		margin-bottom: 80px;
+//	}
+//	&__block {
+//		display: block;
+//		position: relative;
+//		width: 100%;
+//		background-color: #181A1F;
+//		padding: 0;
+//		& .inner {
+//			position: relative;
+//			padding: 160px 10px 20px;
+//			@media (min-width: $screen-sm) {
+//				padding: 0;
+//				position: static;
+//			}
+//		}
+//	}
+//
+//	&__illustr {
+//		display: block;
+//		position: absolute;
+//		top: 0;
+//		left: 0;
+//		width: 100%;
+//		height: 100%;
+//
+//		&:after {
+//			content: '';
+//			display: block;
+//			position: absolute;
+//			top: 100px;
+//			left: 0;
+//			width: 100%;
+//			bottom: 0;
+//			background-image: linear-gradient(to bottom, rgba(#181a1f, 0) 0%, rgba(#181a1f, 1) 125px, #181A1F 100%);
+//			@media (min-width: $screen-sm) {
+//				top: 0;
+//				background-image: linear-gradient(to right, #181A1F 0%, #181A1F 60%, rgba(#181a1f, 0) 100%);
+//			}
+//			@media (min-width: $screen-md) {
+//				background-image: linear-gradient(to right, #181A1F 0%, #181A1F 40%, rgba(#181a1f, 0) 80%, rgba(#181a1f, 0) 100%);
+//			}
+//			@media (min-width: $screen-lg) {
+//				background-image: linear-gradient(to right, #181A1F 0%, #181A1F 40%, rgba(#181a1f, 0) 65%, rgba(#181a1f, 0) 100%);
+//			}
+//
+//			.#{$name}__block--right & {
+//				@media (min-width: $screen-sm) {
+//					background-image: linear-gradient(to left, #181A1F 0%, #181A1F 60%, rgba(#181a1f, 0) 100%);
+//				}
+//				@media (min-width: $screen-md) {
+//					background-image: linear-gradient(to left, #181A1F 0%, #181A1F 40%, rgba(#181a1f, 0) 80%, rgba(#181a1f, 0) 100%);
+//				}
+//				@media (min-width: $screen-lg) {
+//					background-image: linear-gradient(to left, #181A1F 0%, #181A1F 40%, rgba(#181a1f, 0) 65%, rgba(#181a1f, 0) 100%);
+//				}
+//			}
+//		}
+//	}
+//
+//	&__bg {
+//		display: block;
+//		position: absolute;
+//		top: 0;
+//		left: 0;
+//		width: 100%;
+//		height: 230px;
+//		object-fit: cover;
+//		@media (min-width: $screen-sm) {
+//			height: 100%;
+//		}
+//	}
+//
+//	&__img {
+//		display: block;
+//		margin: 0 auto;
+//		max-width: 100%;
+//		max-height: 220px;
+//		object-fit: contain;
+//		position: relative;
+//		@media (min-width: $screen-sm) {
+//			position: absolute;
+//			left: calc(50% + 120px);
+//			margin: 0;
+//			max-height: 100%;
+//			z-index: 1;
+//			bottom: 0;
+//		}
+//		@media (min-width: $screen-md) {
+//			left: calc(50% + 170px);
+//		}
+//
+//		.#{$name}__block--right & {
+//			@media (min-width: $screen-sm) {
+//				right: calc(50% + 120px);
+//				left: auto;
+//			}
+//			@media (min-width: $screen-md) {
+//				right: calc(50% + 170px);
+//			}
+//		}
+//	}
+//
+//	&__content {
+//		display: flex;
+//		width: 100%;
+//		margin: 0;
+//		position: relative;
+//		flex-wrap: wrap;
+//		justify-content: center;
+//		align-items: flex-start;
+//		color: #FFFFFF;
+//		font-size: 14px;
+//		font-weight: 600;
+//		line-height: 22px;
+//		text-align: center;
+//		letter-spacing: 0.24px;
+//		@media (min-width: $screen-sm) {
+//			min-height: 440px;
+//			width: 70%;
+//			padding: 30px 25px;
+//			align-items: center;
+//			font-size: 16px;
+//		}
+//		@media (min-width: $screen-lg) {
+//			width: 60%;
+//		}
+//
+//		.#{$name}__block--right & {
+//			@media (min-width: $screen-sm) {
+//				margin-left: 30%;
+//			}
+//			@media (min-width: $screen-lg) {
+//				margin-left: 40%;
+//			}
+//		}
+//
+//		& p {
+//			padding: 0;
+//			margin: 0;
+//			& + p {
+//				margin-top: 10px;
+//			}
+//		}
+//
+//		& ul {
+//			display: block;
+//			width: 100%;
+//			padding: 0;
+//			margin: 10px 0;
+//			list-style: none;
+//
+//			& li {
+//				display: block;
+//				width: 100%;
+//				margin: 0;
+//				padding: 10px 0;
+//				font-size: 13px;
+//				font-weight: 400;
+//				line-height: 20px;
+//				text-align: left;
+//				letter-spacing: 0.22px;
+//				@media (min-width: $screen-sm) {
+//					font-size: 16px;
+//				}
+//
+//				&:before {
+//					content: '';
+//					display: inline-block;
+//					vertical-align: top;
+//					width: 3px;
+//					height: 3px;
+//					border-radius: 50%;
+//					background-color: #FFFFFF;
+//					margin: 8px 15px 0;
+//				}
+//			}
+//		}
+//
+//		& a:not([class]) {
+//			display: inline-block;
+//			vertical-align: top;
+//			color: #FFFFFF;
+//			font-size: 12px;
+//			font-weight: 600;
+//			text-align: center;
+//			line-height: 1.2;
+//			text-decoration: none;
+//			outline: none;
+//			cursor: pointer;
+//			transition: color .3s ease;
+//
+//			&:hover,
+//			&:active,
+//			&:focus {
+//				text-decoration: none;
+//				color: #37EDFF;
+//			}
+//		}
+//
+//		& .button {
+//			min-width: 122px;
+//			min-height: 56px;
+//			border-radius: 2px;
+//			box-shadow: none;
+//			font-size: 18px;
+//			margin-bottom: 10px;
+//		}
+//
+//	}
+//
+//	&__content-inner {
+//		display: block;
+//		width: 100%;
+//		height: auto;
+//	}
+//
+//	&__title {
+//		display: block;
+//		width: 100%;
+//		padding: 0;
+//		margin: 0 0 16px 0;
+//		color: #7AE582;
+//		font-size: 24px;
+//		font-weight: 700;
+//		line-height: 28px;
+//		text-transform: uppercase;
+//		text-align: center;
+//		letter-spacing: 1.03px;
+//		@media (min-width: $screen-sm) {
+//			margin-bottom: 20px;
+//		}
+//	}
+//
+//	/* promotions page new design */
+//
+//	&__section_no-dp {
+//		min-height: 347px;
+//		height: 30.416666666666668vw;
+//		max-height: 520px;
+//		/*.slider__banner {
+//			background-image: url("/resources/images/banners/banner-0-bg.jpg");
+//		}
+//		.slider__banner-side_left {
+//			background-image: url("/resources/images/banners/banner-0-left-side.png");
+//		}
+//		.slider__banner-side_right {
+//			background-image: url("/resources/images/banners/banner-0-right-side.png");
+//		}*/
+//	}
+//
+//	&__inner {
+//		background-color: #132131;
+//		margin-top: 60px;
+//	}
+//
+//	&__container {
+//		max-width: 1254px;
+//		margin: 0 auto;
+//		padding: 80px 15px 60px;
+//	}
+//
+//	&__section-title {
+//		font-weight: bold;
+//		font-size: 36px;
+//		color: #FFFFFF;
+//		text-align: center;
+//		margin: 0 0 80px;
+//	}
+//	&__card-grid {
+//		list-style: none;
+//		padding: 0;
+//		margin: 0;
+//		display: flex;
+//	}
+//	&__card {
+//		margin: 0 7px;
+//		border-radius: 6px;
+//	}
+//	&__card-grid-item {
+//		flex: 1;
+//		&:first-child {
+//			.#{$name}__promo_hot {
+//				margin: 0 14px 0 0;
+//			}
+//		}
+//		&:last-child {
+//			.#{$name}__promo_hot {
+//				margin: 0 0 0 14px;
+//			}
+//		}
+//	}
+//	&__promo-title {
+//		position: relative;
+//		z-index: 2;
+//		font-size: 14px;
+//		margin: 30px 0;
+//		font-weight: bold;
+//	}
+//	&__promo-bonus {
+//		position: relative;
+//		z-index: 2;
+//		font-size: 28px;
+//		line-height: 31px;
+//		margin: 0 0 18px;
+//		font-weight: bold;
+//	}
+//	&__promo-description {
+//		position: relative;
+//		z-index: 2;
+//		font-size: 14px;
+//		margin: 0 0 30px;
+//		color: rgba(255,255,255,0.7);
+//	}
+//	&__section-footer {
+//		margin-top: 48px;
+//		text-align: center;
+//		.button {
+//			min-height: 48px;
+//		}
+//	}
+//	&__footnote {
+//		font-size: 14px;
+//		line-height: 18px;
+//		color: transparentize(#FFFFFF, .3);
+//		max-width: 620px;
+//		margin: 22px auto 0;
+//	}
+//	&__wp-grid {
+//		display: grid;
+//		grid-template-columns: 1fr 1fr;
+//		grid-column-gap: 20px;
+//		grid-row-gap: 20px;
+//		list-style: none;
+//		padding: 0;
+//		margin: 0;
+//	}
+//	&__wp-grid-item {
+//		border-radius: 8px;
+//		background-color: #1D2C3A;
+//		&:first-child {
+//			.#{$name}__wp-top-box {
+//				background-image: url("/resources/images/coins-first.png");
+//			}
+//		}
+//		&:nth-child(2) {
+//			.#{$name}__wp-top-box {
+//				background-image: url("/resources/images/coins-second.png");
+//			}
+//		}
+//		&:nth-child(3) {
+//			.#{$name}__wp-top-box {
+//				background-image: url("/resources/images/coins-third.png");
+//			}
+//		}
+//		&:last-child {
+//			.#{$name}__wp-top-box {
+//				background-image: url("/resources/images/coins-fourth.png");
+//			}
+//		}
+//		.#{$name}__promo-title {
+//			font-size: 18px;
+//			line-height: 24px;
+//			margin: 0 0 12px;
+//			//font-weight: normal;
+//			text-transform: uppercase;
+//			//font-size: 38px;
+//			//margin: 0 0 25px;
+//		}
+//	}
+//	&__wp-item {
+//		display: flex;
+//		flex-direction: column;
+//		height: 100%;
+//	}
+//	&__wp-top-box {
+//		position: relative;
+//		padding-bottom: 42%;
+//		background: no-repeat right 50px center;
+//		.promotions__promo-bonus {
+//			position: absolute;
+//			top: 0;
+//			left: 0;
+//			bottom: 0;
+//			width: 50%;
+//			display: flex;
+//			align-items: center;
+//			justify-content: center;
+//			text-align: center;
+//			margin: 0;
+//			padding: 20px;
+//
+//		}
+//	}
+//	&__wp-bottom-box {
+//		padding: 20px;
+//		flex: 1;
+//		display: flex;
+//		flex-direction: column;
+//	}
+//	&__promo-btns {
+//		display: flex;
+//		align-items: center;
+//		justify-content: center;
+//		margin-top: auto;
+//		.button {
+//			min-height: 48px;
+//			width: 100%;
+//			max-width: 324px;
+//		}
+//	}
+//	&__section_hot {
+//		background: url("/resources/images/promo-section-hot-bg.png") no-repeat top center;
+//		background-size: cover;
+//	}
+//	&__promo-thumbnail {
+//		padding-bottom: 52.5%;
+//		position: relative;
+//		background: no-repeat center center;
+//		background-size: cover;
+//		.#{$name}__promo-bonus {
+//			font-size: 60px;
+//			letter-spacing: .7px;
+//			text-align: center;
+//			line-height: 60px;
+//			position: absolute;
+//			top: 0;
+//			right: 0;
+//			bottom: 0;
+//			left: 0;
+//			margin: 0;
+//			display: flex;
+//			align-items: center;
+//			flex-direction: column;
+//			justify-content: center;
+//			span {
+//				display: block;
+//			}
+//		}
+//		&_wednesday {
+//			background-image: url("/resources/images/hot_promo_wednesday.jpg");
+//			.#{$name}__promo-bonus {
+//				text-shadow: 0 0 16px #002F20;
+//				word-spacing: 9999px;
+//			}
+//		}
+//		&_friday {
+//			background-image: url("/resources/images/hot_promo_friday.jpg");
+//			.#{$name}__promo-bonus {
+//				text-shadow: 0 0 16px #350902;
+//				word-spacing: 9999px;
+//			}
+//		}
+//		&_weekend {
+//			background-image: url("/resources/images/hot_promo_weekend.jpg");
+//			.#{$name}__promo-bonus {
+//				text-shadow: 0 0 16px #314C00;
+//				word-spacing: 9999px;
+//			}
+//		}
+//	}
+//	&__promo_hot {
+//		border-radius: 8px;
+//		overflow: hidden;
+//		background-color: #1D2C3A;
+//		height: 100%;
+//		display: flex;
+//		flex-direction: column;
+//		.#{$name}__promo-title {
+//			font-size: 24px;
+//			line-height: 27px;
+//			color: #FFFFFF;
+//			margin: 0 0 20px;
+//		}
+//		.#{$name}__promo-description {
+//			font-size: 14px;
+//			color: #FFFFFF;
+//			line-height: 22px;
+//			margin: 0 0 10px;
+//		}
+//		.#{$name}__promo-note {
+//			color: transparentize(#FFFFFF, .3);
+//			margin-bottom: 10px;
+//		}
+//		.button {
+//			width: 100%;
+//			min-height: 48px;
+//			max-width: 324px;
+//			margin: auto auto 0;
+//		}
+//	}
+//	&__promo-inner {
+//		flex: 1;
+//		padding: 20px 30px 30px;
+//		display: flex;
+//		flex-direction: column;
+//		p:last-of-type {
+//			margin-bottom: 25px;
+//		}
+//	}
+//	&__sm-text {
+//		font-size: 18px;
+//		letter-spacing: .18px;
+//		line-height: 30px;
+//	}
+//	&__md-text {
+//		font-size: 48px;
+//		letter-spacing: .48px;
+//		line-height: 40px;
+//	}
+//	&__promo-banner {
+//		width: 100%;
+//	}
+//	// and (min-width: $screen-md)
+//	@media (max-width: 1248px) {
+//		.promotions__section-title {
+//			font-size: 30px;
+//			margin-bottom: 50px;
+//		}
+//		.promotions__container {
+//			padding: 50px 15px 40px;
+//		}
+//		.promotions__promo-inner {
+//			padding: 20px;
+//		}
+//	}
+//	@media (max-width: #{$screen-md - 1px}) {
+//		.promotions__section-title {
+//			font-size: 24px;
+//			line-height: 30px;
+//			margin-bottom: 40px;
+//		}
+//		.promotions__container {
+//			padding: 40px 15px 30px;
+//		}
+//		.promotions__section-title {
+//			font-size: 24px;
+//			line-height: 30px;
+//		}
+//		.promotions__footnote {
+//			font-size: 12px;
+//			line-height: 14px;
+//		}
+//		.promotions__section-footer {
+//			margin-top: 30px;
+//			.button {
+//				font-size: 14px;
+//			}
+//		}
+//		.promotions__sm-text {
+//			font-size: 16px;
+//			line-height: 20px;
+//		}
+//		.promotions__promo_hot .promotions__promo-title {
+//			font-size: 18px;
+//			line-height: 24px;
+//			margin: 0 0 12px;
+//		}
+//	}
+//	/* end promotions page new design */
+//}
+//@media (max-width: 930px) {
+//	.promotions {
+//		.promotions__section_first-dp {
+//			.promotions__container {
+//				padding-bottom: 0;
+//			}
+//		}
+//		.promotions__card-grid {
+//			flex-wrap: wrap;
+//		}
+//		.promotions__card-grid-item {
+//			flex-basis: 100%;
+//			margin-bottom: 20px;
+//		}
+//		.promotions__promo_hot {
+//			margin: 0 auto;
+//			max-width: 600px;
+//			min-width: 290px;
+//			&:first-child,
+//			&:last-child {
+//				margin: 0 auto;
+//			}
+//		}
+//		.promotions__wp-top-box {
+//			background-size: auto 80%;
+//			background-position: right 20px center;
+//		}
+//	}
+//}
+//@media (max-width: 768px) {
+//	.promotions {
+//		.promotions__wp-grid {
+//			display: block;
+//		}
+//		.promotions__wp-grid-item {
+//			margin: 0 auto 20px;
+//			max-width: 600px;
+//			&:last-child {
+//				margin-bottom: 0;
+//			}
+//		}
+//	}
+//}
+.promotions { // add variable with height of the footer
+    background: url("/resources/images/promotions/promotions-main-new-banner.png") center 60px no-repeat #1B222B;
+
+	&__section {
+		border-radius: 10px;
+        padding: 30px 40px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+		&--verify {
+			display: flex;
+			align-items: baseline;
+            background-image: url("/resources/images/promotions/promotions-verify-phone-bg.png");
+		}
+	}
+
+	&__accent-text {
+		font-weight: 800;
+		font-size: 28px;
+		line-height: 1.25;
+		color: #7AE582;
+		//color: #F09E1A; // new color
+
+        &--mr-small {
+            margin-right: 20px;
+        }
+	}
+
+    &__text-value {
+        font-size: 48px;
+    }
+
+	&__verify-text {
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: #FFFFFF;
+
+		&--bold {
+            font-weight: 700;
+		}
+	}
+
+	&__verify-button {
+        min-height: 48px;
+        max-width: 204px;
+        width: 100%;
+        text-transform: uppercase;
+        margin-left: auto;
+        align-self: center;
+	}
+}
