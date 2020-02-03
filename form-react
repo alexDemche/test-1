@@ -1,0 +1,175 @@
+import React from 'react';
+import styled from 'styled-components';
+
+const FormInput = ({
+  name, type, placeholder, onChange, className, value, error, children, isLabel = false, label, ...props
+}) => (
+  <>
+    {isLabel && <label htmlFor={name}>{label}</label>}
+    <input
+      id={name}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      onChange={onChange}
+      value={value}
+      className={className}
+      style={error && { 'border-bottom': 'solid 1px red' }}
+    />
+    {error && <p style={{ margin: 0 }}>{error}</p>}
+  </>
+);
+
+export const StyledFormInput = styled(FormInput)`
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  outline: none;
+  margin: 15px auto;
+  background-color: #25262A;
+  width: 100%;
+  padding: 10px 5px;
+  position: relative;
+  border-bottom: 1px solid #4A4A4A;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    background: transparent !important;
+    transition: background-color 9999999999s ease-in-out, color .3s ease, border-color .3s ease !important;
+    font-size: 16px;
+  }
+
+  &::placeholder {
+    color: #979797;
+  }
+
+  &:focus {
+    border-bottom: 1px solid #979797;
+    background-color: #25262A;
+
+    &::placeholder {
+      color: #fff;
+    }
+  }
+`;
+
+// FormInput.defaultProps = {
+//   type: "text",
+//   className: ""
+// }
+//
+// FormInput.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   type: PropTypes.string,
+//   placeholder: PropTypes.string.isRequired,
+//   type: PropTypes.oneOf(['text', 'number', 'password']),
+//   className: PropTypes.string,
+//   value: PropTypes.any,
+//   onChange: PropTypes.func.isRequired
+// }
+
+
+// -------------
+
+import React from 'react';
+import styled from 'styled-components';
+import { StyledFormInput } from '../FormInput/FormInput';
+import { Button } from '../Button';
+
+class Form extends React.Component {
+  state = {
+    user: {
+      username: '',
+      password: '',
+      email: '',
+      phone: '',
+    },
+    errors: {},
+    submitted: false,
+  };
+
+  handleChange = (event) => {
+    const { user } = this.state;
+    user[event.target.name] = event.target.value;
+    this.setState({ user });
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    const {
+      user: { username, password, email, phone },
+    } = this.state;
+    const err = {};
+
+    if (!username) {
+      err.username = 'Enter your username!';
+    }
+
+    if (password.length < 8) {
+      err.password = 'Password must be at least 8 characters!';
+    }
+
+    this.setState({ errors: err }, () => {
+      if (Object.getOwnPropertyNames(this.state.errors).length === 0) {
+        this.setState({ submitted: true });
+      }
+    });
+  };
+
+  render() {
+    const {
+      submitted,
+      errors,
+      user: { username, password },
+    } = this.state;
+
+    return (
+      <>
+        {submitted
+          ? (<p>Thanks for order, {username} !</p>)
+          : (
+            <form className={this.props.className} onSubmit={this.onSubmit}>
+              <StyledFormInput
+                isLabel={false}
+                label="name"
+                name="username"
+                type="text"
+                value={username}
+                onChange={this.handleChange}
+                placeholder="Name Lastname"
+                error={errors.username}
+                required
+                className="input"
+              />
+
+              <StyledFormInput
+                label="Password"
+                isLabel={false}
+                name="password"
+                type="password"
+                value={password}
+                onChange={this.handleChange}
+                placeholder="Enter password..."
+                error={errors.password}
+                className="input"
+                required
+              />
+
+              <Button
+                text="сделать заказ"
+                type="submit"
+              />
+            </form>
+          )}
+      </>
+    );
+  }
+}
+
+export const StyledForm = styled(Form)`
+  width: 100%;
+`;
