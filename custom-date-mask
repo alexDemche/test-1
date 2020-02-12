@@ -1,0 +1,261 @@
+// ------------------- _date.html ---------
+<!-- placeholder="{{placeholder | translate}}" -->
+<!--<input type="date" class="form__input form__date" show-button-bar="false"-->
+<!--        ng-model="value" is-open="opened" max="2999-12-31" required/>-->
+<input
+    ng-init="load()"
+    ng-model="value"
+    class="form__input form__date form__input--pt-sm'"
+    type="{{dateSupport}}"
+    ng-keyup="dateSupport === 'text' && checkDateOfBirth()"
+    maxlength="10"
+    id="date-of-birth"
+    required
+>
+
+<span ng-if="$root.data.device === 'mobile'" class="form__select-caret font-icons font-icons--arrow-left"></span>
+<label ng-if="isShowlabel || $root.data.device === 'mobile'" class="form__label" for="date-of-birth">dd.mm.yy</label>
+
+<span class="form__bar"></span>
+
+// END ------------------- _date.html ---------
+
+// -------- _form.scss
+
+&--pt-sm {
+			padding-top: 12px;
+		}
+
+// input type DATE
+input[type=date]::-webkit-clear-button, /* blue cross */
+input[type=date]::-webkit-inner-spin-button, /* up */
+input[type=date]::-webkit-outer-spin-button, /* down */
+input[type=date]::-webkit-calendar-picker-indicator /* datepicker*/ {
+	display: none;
+}
+input[type=date] {
+	-webkit-appearance: inherit !important;
+}
+// END -------- _form.scss
+
+// ------ FormElementdirective.js
+/* eslint-disable */
+CasinoDirectives
+    .directive('casinoFormElement', ['$rootScope', '$http', '$templateCache', 'SYSTEM', 'Pages', '$compile', '$translate', 'PagesService', '$sce',
+        function($rootScope, $http, $templateCache, SYSTEM, Pages, $compile, $translate, PagesService, $sce) {
+        return {
+            restrict: 'E',
+            replace: true,
+            transclude: true,
+            scope: {
+                data: '=data',
+                value: '=ngModel',
+                customFields: '=customFields',
+                errors: '=errors',
+                isDisabled: '<ngDisabled',
+                isProfileForm: '<isProfileForm',
+                isEditMode: '<isEditMode',
+                ngChange: '&ngChange'
+            },
+            link: function(scope, iElement) {
+                scope.checkDateOfBirth = function () {
+                    var v = scope.value.replace(/[^0-9.]/g, '');
+
+                    // day
+                    if (v.match(/(^[^0-3])|(^3[^0-1])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    } else if ((v.match(/^[0-3]\d$/) !== null)) {
+                        scope.value = v + '.';
+                    }
+
+                    // month
+                    if (v.match(/(^\d{2}\.[^0-1])|(^\d{2}\.1[^0-2])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    } else if ((v.match(/(^\d{2}\.1[0-2]$)|(^\d{2}\.0[0-9]$)/) !== null)) {
+                        scope.value = v + '.';
+                    }
+
+                    // year
+                    if (v.match(/(^\d{2}\.\d{2}\.[^1-2])|(^\d{2}\.\d{2}\.1[^9])|(^\d{2}\.\d{2}\.2[^0])|(^\d{2}\.\d{2}\.20[^0-1])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    }
+                }
+
+                SYSTEM.PASSWORD_STRENGTH = SYSTEM.PASSWORD_STRENGTH || {};
+
+                var templateUrl = '',
+                    field_scope = scope.data.scope,
+                    label_translate_key;
+
+                scope.name = (scope.data.scope || '') + '_' + scope.data.field;
+
+                if (field_scope === 'profile') {
+                    field_scope = 'profile/user';
+                }
+
+                if (!field_scope) {
+                    field_scope = 'profile/user';
+                }
+
+                label_translate_key = scope.label = scope.data.label ? scope.data.label : 'activerecord.attributes.' + field_scope + '.' + scope.data.field;
+                scope.placeholder = scope.data.placeholder ? scope.data.placeholder : 'activerecord.attributes.' + field_scope + '.' + scope.data.field;
+
+                if (scope.data.localData.value !== undefined) {
+                    scope.value = scope.data.localData.value;
+                }
+
+                var pathToDirectory = scope.isProfileForm ? 'profile/' : '';
+
+                templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_input.html';
+
+                switch (scope.data.localData.type) {
+                    case 'currency':
+                    case 'country':
+                    case 'nationality':
+                    case 'language':
+                    case 'time_zone':
+                    case 'select':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_select.html';
+                        break;
+                    case 'date':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_date.html';
+                        break;
+                    case 'radio':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_radio.html';
+                        break;
+                    case 'checkbox':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_checkbox.html';
+                        break;
+                    case 'double_email':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_double_email.html';
+                        break;
+                    case 'email':
+                        if (SYSTEM.PASSWORD_SAVE_FORBIDDEN === true && scope.data.field === 'email') {
+                            templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_email_with_fake_password.html';
+                        }
+                        break;
+                    case 'password':
+                        if (SYSTEM.PASSWORD_STRENGTH.AVAILABLE && scope.data.field === 'password') {
+                            templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_password.html';
+                        }
+                        break;
+                    case 'captcha':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_captcha.html';
+                        break;
+                    default:
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_input.html';
+                }
+
+                if (scope.data.name == 'terms_acceptance' || scope.data.name == 'age_terms_acceptance') {
+                    templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_terms_acceptance.html';
+
+                    var prepareLabel = function () {
+                        Pages.list({l: $rootScope.currentLocale})
+                            .$promise
+                            .then(function (pages) {
+
+                                var termsMenuItem,
+                                    policyMenuItem;
+
+                                termsMenuItem = pages.find(function(page){
+                                    return PagesService.getLinkMenuItem(page, 'TERMS_AND_CONDITIONS');
+                                });
+
+                                policyMenuItem = pages.find(function(page){
+                                    return PagesService.getLinkMenuItem(page, 'PRIVACY_POLICY');
+                                });
+
+                                var terms_text = '';
+                                if (termsMenuItem && !scope.data.hasCombinedLabel) {
+                                    terms_text += '<a href="' + ($rootScope.currentLocale ? '/' + $rootScope.currentLocale + '/' : '') + termsMenuItem.path + '" target="_blank">';
+                                }
+
+                                if (termsMenuItem && scope.data.hasCombinedLabel) {
+                                    if(SYSTEM.ENABLE_TERMS_TEXT_POPUP) {
+                                        terms_text += '<a href="#" onclick="window.termsModal.open({pageName: \'terms-and-conditions\'});">';
+                                    } else {
+                                        terms_text += '<a href="#terms-and-conditions">';
+                                    }
+                                }
+                                terms_text += $translate.instant('frontend.links.terms_and_conditions');
+
+                                if (termsMenuItem || scope.data.hasCombinedLabel) {
+                                    terms_text += '</a>';
+                                }
+
+                                var privacy_text = '';
+                                if (policyMenuItem && !scope.data.hasCombinedLabel) {
+                                    privacy_text += '<a href="' + ($rootScope.currentLocale ? '/' + $rootScope.currentLocale + '/' : '') + policyMenuItem.path + '" target="_blank">';
+                                }
+
+                                if (policyMenuItem && scope.data.hasCombinedLabel) {
+                                    if(SYSTEM.ENABLE_TERMS_TEXT_POPUP) {
+                                        privacy_text += '<a href="#" onclick="window.termsModal.open({pageName: \'privacy-policy\'});" >';
+                                    } else {
+                                        privacy_text += '<a href="#privacy-policy">';
+                                    }
+                                }
+                                privacy_text += $translate.instant('frontend.links.privacy_policy');
+
+                                if (policyMenuItem || scope.data.hasCombinedLabel) {
+                                    privacy_text += '</a>';
+                                }
+
+                                var and_text = $translate.instant('frontend.and');
+
+                                var text = terms_text + ' ' + and_text + ' ' + privacy_text;
+                                scope.label = $translate.instant(label_translate_key, _.extend(scope.data.localData.translate_value || {}, {text: text}));
+
+                                scope.label = $sce.trustAsHtml(scope.label.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+                            });
+                    };
+                    prepareLabel();
+
+                    $rootScope.$on('$translateChangeSuccess', function () {
+                        prepareLabel();
+                    });
+                }
+
+                if (scope.data.localData.template) {
+                    templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_' + scope.data.localData.template + '.html';
+                }
+
+                $http.get('/app/Blocks/FormElements/' + pathToDirectory + '_element.html', {cache: $templateCache}).success(function(tplContent) {
+                    $http.get(templateUrl, {cache: $templateCache}).success(function(tplContentElement) {
+                        iElement.replaceWith($compile(tplContent.replace('<!--element-->', tplContentElement))(scope));
+                    });
+                });
+            },
+            controller: ['$scope', function ($scope) {
+                $scope.load = function() {
+                    var test = document.createElement('input');
+                    test.type = 'date';
+                    if (test.type === 'text') {
+                        // date input not supported
+                        $scope.dateSupport = 'text';
+                        $scope.isShowlabel = true;
+                    }
+                    else {
+                        // date input supported
+                        $scope.dateSupport = 'date';
+                        $scope.isShowlabel = false;
+                    }
+                };
+
+                if ($scope.data.localData.type === 'date') {
+                    $scope.open = function ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+
+                        $scope.opened = true;
+                    };
+
+                    $scope.datepickerOptions = {
+                        'show-button-bar': false,
+                        showWeeks: false
+                    };
+                }
+            }]
+        };
+    }]);
+// END From Element directive
