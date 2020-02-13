@@ -1,0 +1,1249 @@
+// ------- 
+<!-- placeholder="{{placeholder | translate}}" -->
+<!--<input type="date" class="form__input form__date" show-button-bar="false"-->
+<!--        ng-model="value" is-open="opened" max="2999-12-31" required/>-->
+<input
+    ng-init="load()"
+    ng-model="value"
+    class="form__input form__date"
+    type="{{dateSupport}}"
+    ng-keyup="dateSupport === 'text' && checkDateOfBirth()"
+    maxlength="10"
+    max="{{dateSupport === 'date' && '2020-01-01'}}"
+    id="date-of-birth"
+    required
+    ng-class="{'form__input--pt-sm' : $root.data.device === 'desktop' && dateSupport === 'date'}"
+>
+
+<span ng-if="$root.data.device === 'mobile'" class="form__select-caret font-icons font-icons--arrow-left"></span>
+<label ng-if="isShowlabel || $root.data.device === 'mobile'" class="form__label" for="date-of-birth">{{$root.data.device === 'mobile' ? 'mm/dd/yy' : 'dd/mm/yy'}}</label>
+<!--<label ng-if="$root.data.device === 'mobile'" class="form__label" for="date-of-birth">mm/dd/yy</label>-->
+
+<span class="form__bar"></span>
+// ----
+
+$input-txt: rgba(#fff, .78);
+$input-txt-h: #FFFFFF;
+//$input-bg: rgba(0, 0, 0, .25);
+$input-bg: rgba(255, 255, 255, 0.1);
+$input-bg-h: rgba(0, 0, 0, .25);
+$input-bg-fill: transparent;
+//$input-border: #000000;
+//$input-border-h: #000000;
+$input-border: rgba(174, 180, 187, 0.5);
+$input-border-h: theme-color('action', 'hover');
+//$border-radius: 0;
+$border-radius: 5px;
+//$border-width: 0;
+$border-width: 1px;
+
+$checkbox-size: 20px;
+$checkbox-bg: transparent;
+$checkbox-bg-h: #000000;
+//$checkbox-bg-checked: #38B8F1;
+$checkbox-bg-checked: theme-color('action', 'hover');
+$checkbox-radius: 3px;
+$checkbox-border: rgba(255, 255, 255, .3);
+$checkbox-border-h: #FFFFFF;
+$checkbox-border-checked: #38B8F1;
+$checkbox-text: #FFFFFF;
+$checkbox-text-h: #FFFFFF;
+//$checkbox-text-a: #37EDFF;
+//$checkbox-text-a-h: #37EDFF;
+$checkbox-text-a: theme-color('link', 'hover');
+$checkbox-text-a-h: theme-color('link', 'base');
+$checkbox-checked: #FFFFFF;
+
+$error-border: #FF2615;
+$error-text: #FF2615;
+$error: #FF2615;
+
+$name: 'form';
+// ------------------------------------------------------------------------------------------------------------------
+
+%elem {
+	display: block;
+	width: 100%;
+	//padding: 16px 16px 10px;
+	padding: 16px 15px 10px; // new
+	height: 48px;
+	line-height: 1;
+	vertical-align: middle;
+	border-radius: $border-radius;
+	background: none $input-bg;
+	border: $border-width solid $input-border;
+	box-shadow: none;
+	color: $input-txt;
+	font-size: 14px;
+	font-weight: 600;
+	text-align: left;
+	text-transform: none;
+	letter-spacing: normal;
+	caret-color: #FFFFFF;
+	transition: border-color .3s ease, color .3s ease;
+
+	margin-bottom: 10px; // new
+	@media (max-width: $screen-sm - 1) {
+		margin-bottom: 5px;
+        height: 40px;
+		font-size: 13px;
+	}
+
+	&:hover,
+	&:active,
+	&:focus,
+	&:active:hover,
+	&:active:focus {
+		color: $input-txt-h;
+		border-color: $input-border-h;
+		box-shadow: none;
+		outline: none;
+	}
+
+}
+// ------------------------------------------------------------------------------------------------------------------
+.#{$name} {
+	letter-spacing: normal;
+
+	&__group {
+		position: relative;
+		margin: 0;
+		&--user_password,
+		&--password {
+			.form__input {
+				padding-right: 35px;
+			}
+		}
+	}
+
+	/*&__group-container {
+		margin: 0 0 16px 0;
+	}*/
+
+	&__label {
+		//left: 16px;
+		left: 15px; // new
+		//display: flex;
+		align-items: center;
+		margin: auto 0;
+		font-size: 14px;
+		//color: rgba(255, 255, 255, 0.6);
+		color: #AEB4BB; // new
+		letter-spacing: 0.4px;
+		//font-weight: 400;
+		font-weight: 700;
+		pointer-events: none;
+		transition: all .2s ease;
+		z-index: 3;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		//max-width: calc(100% - 32px);
+		max-width: calc(100% - 38px);
+
+		@media (max-width: $screen-sm - 1) {
+			font-size: 12px;
+		}
+		&--checkbox {
+			display: block;
+		}
+		&--message {
+			display: block;
+			color: #FFFFFF;
+			margin: 7px 0 5px 0;
+		}
+
+		sup {
+			top: -0.4em;
+		}
+	}
+
+	// ------------------------------------------------------ input ---------------------------------------------
+	&__input {
+		@extend %elem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		&::-moz-placeholder {
+			opacity: 1;
+			transition: color .3s ease, border-color .3s ease !important;
+		}
+		&::-webkit-input-placeholder {
+			color: $input-txt !important;
+			transition: color .3s ease, border-color .3s ease !important;
+		}
+		&:hover::-webkit-input-placeholder {
+			color: $input-txt-h !important;
+		}
+
+		&:-webkit-autofill {
+			//-webkit-box-shadow: inset 0 0 0 100px $input-bg-fill !important;
+			//box-shadow: inset 0 0 0 60px $input-bg-fill !important;
+			color: $input-txt !important;
+			-webkit-text-fill-color: $input-txt !important;
+			background: transparent !important;
+			//border: $border-width*3 solid $input-bg-fill !important;
+			//border-radius: $border-radius !important;
+			transition: background-color 9999999999s ease-in-out, color .3s ease, border-color .3s ease !important;
+
+			&:hover,
+			&:active,
+			&:focus,
+			&:active:hover,
+			&:active:focus {
+				color: $input-txt-h !important;
+				-webkit-text-fill-color: $input-txt-h !important;
+				border-color: $input-border !important;
+				transition: background-color 9999999999s ease-in-out 0s !important;
+			}
+		}
+
+		&--pt-sm {
+			padding-top: 12px;
+		}
+
+		.#{$name}__group--error & {
+			~ .form__label {
+				color: $error-text;
+			}
+			~ .form__bar {
+				&:after {
+					background-color: $error-text;
+					width: 100%;
+				}
+			}
+		}
+
+		&:focus {
+			~ .form__label {
+				//color: #37EDFF;
+				color: theme-color('action', 'hover');
+			}
+		}
+		&.ng-not-empty,
+		&:focus {
+			~ .form__label {
+				//top: 9px;
+				top: 12px;
+				//font-size: 12px;
+				font-size: 10px; // new
+				@media (max-width: $screen-sm - 1) {
+					font-size: 9px; // new
+					top: 9px;
+				}
+			}
+		}
+
+		&:focus {
+			~ .form__bar {
+				&:after {
+					background-color: #38B8F1;
+					width: 100%;
+				}
+			}
+		}
+
+	}
+
+	&__password-view-icon {
+		position: absolute;
+		top: 50%;
+		right: 10px;
+		font-size: 20px;
+		color: #fff;
+		transform: translateY(-50%);
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	// new styles disable form bar
+	//&__bar {
+	//	&:before,
+	//	&:after {
+	//		content: "";
+	//		position: absolute;
+	//		height: 1px;
+	//		bottom: 0;
+	//		left: 0;
+	//	}
+	//	&:before {
+	//		width: 100%;
+	//		background-color: rgba(255, 255, 255, .2);
+	//		z-index: 1;
+	//	}
+	//	&:after {
+	//		width: 0;
+	//		background-color: transparent;
+	//		transition: width .1s linear;
+	//		z-index: 2;
+	//	}
+	//}
+
+	&__fields { // new
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+
+		&--checkbox {
+			display: block;
+
+		}
+
+		& > div {
+			flex-basis: 100%;
+		}
+
+		& > :nth-child(n+3):nth-child(-n+6) {
+			flex-basis: 49%;
+			//width: 49%;
+		}
+
+		.g-recaptcha {
+			//margin-top: 10px;
+			//
+			//@media (max-width: 499px) {
+			//	margin-top: 5px;
+			//}
+		}
+	}
+
+	//---------------------------------------------------------------------------------------------- checkbox -------------------------------------------------------------------
+	&__fields--checkbox {
+		//margin: 16px 0 24px;
+		//margin: 20px 0 30px;
+		margin: 10px 0 20px;
+
+		@media (max-width: $screen-sm - 1) {
+			margin: 5px 0;
+		}
+
+		//@media (max-width: 499px) {
+		//	margin: 10px 0;
+		//}
+		//
+		//@media (max-width: 359px) {
+		//	margin: 0 0 15px;
+		//}
+	}
+
+	&__group--checkbox {
+		&:before {
+			display: none;
+		}
+	}
+
+	&__checkbox[type=checkbox] {
+		position: absolute;
+		opacity: 0;
+		height: 0;
+		margin: 0;
+	}
+
+	// ----------------------------------------------------- new -----------------------------------------
+	&__label--checkbox {
+		display: flex;
+		position: relative;
+		//padding: 0 0 0 37px;
+		padding: 0 0 0 30px;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: flex-start;
+		font-size: 14px;
+		line-height: 1.2;
+		//font-weight: 400;
+		font-weight: 600;
+		font-style: normal;
+		text-shadow: none;
+		letter-spacing: normal;
+		color: $checkbox-text;
+		transition: color .3s ease;
+		margin: 0;
+		cursor: pointer;
+		min-height: $checkbox-size;
+		left: 0;
+		top: 0;
+		transform: none;
+		z-index: 5;
+		pointer-events: auto;
+		white-space: initial;
+		width: auto;
+		max-width: initial;
+
+		letter-spacing: -0.3px; // new
+		word-spacing: -0.5px; // new
+
+		@media (max-width: $screen-sm - 1) {
+			font-size: 12px;
+
+		}
+
+
+		& a {
+			color: $checkbox-text-a;
+			text-decoration: underline;
+			transition: color .3s ease;
+			&:hover {
+				color: $checkbox-text-a-h;
+				text-decoration: none;
+			}
+		}
+
+		& > span {
+			display: inline-block;
+			width: 100%;
+			text-align: left;
+
+			&:before {
+				content: unicode($font-icons--check);
+				display: flex;
+				flex-wrap: nowrap;
+				justify-content: center;
+				align-items: center;
+				position: absolute;
+				top: 0;
+				left: 0;
+				margin: 0;
+				width: $checkbox-size;
+				height: $checkbox-size;
+				border-radius: $checkbox-radius;
+				font-size: #{$checkbox-size*.6};
+				color: transparent;
+				vertical-align: middle;
+				text-align: center;
+				background-color: $checkbox-bg;
+				font-family: 'font-icons' !important;
+				speak: none;
+				font-style: normal;
+				font-weight: normal;
+				font-variant: normal;
+				text-transform: none;
+				line-height: 1;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+				cursor: pointer;
+				border: 1px solid $checkbox-border;
+				transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+
+				.#{$name}__group--error & {
+					border-color: $error-border;
+				}
+			}
+		}
+
+		&:hover {
+			color: $checkbox-text-h;
+			border-color: $checkbox-border-h;
+			& > span:before {
+				border-color: $checkbox-border-h;
+			}
+		}
+
+		& input[type=checkbox]:checked + span {
+			&:before {
+				color: $checkbox-checked;
+				background-color: $checkbox-bg-checked;
+				border-color: $checkbox-bg-checked;
+			}
+		}
+	}
+	// -------- end new ----
+
+	&__group--checkbox {
+		margin: 0 0 10px;
+
+		@media (max-width: 499px) {
+			margin: 0 0 6px;
+		}
+	}
+	// ------ END checkbox --------
+
+	// ---------------------------------------------------------- select ------------------------------------------
+	&__select {
+		position: relative;
+		z-index: 6;
+	}
+
+	&__select-button {
+		@extend %elem;
+		//padding: 0 50px 0 16px;
+		padding: 0 40px 0 15px;
+		cursor: pointer;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		position: relative;
+		font-size: 14px;
+		color: rgba(255, 255, 255, 0.6);
+		//font-weight: normal;
+		font-weight: 700;
+
+		@media (max-width: $screen-sm - 1) {
+			font-size: 12px;
+		}
+
+		.open & {
+			border-radius: $border-radius $border-radius 0 0;
+		}
+
+		.#{$name}__group--error & {
+			~ .form__bar {
+				&:after {
+					background-color: #FF2615;
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	&__select-caret {
+		position: absolute;
+		//right: 16px;
+		right: 10px;
+		top: 0;
+		align-self: stretch;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		height: 100%;
+		//font-size: 18px;
+		font-size: 12px;
+		font-weight: 700;
+		//color: rgba(#fff, .5);
+		color: #FFFFFF;
+		transition: color .3s ease;
+		margin: 0;
+
+		.#{$name}__select-button:hover & {
+			color: #FFFFFF;
+		}
+
+		&:before {
+			transform: rotate(-90deg);
+			transition: transform .3s ease;
+		}
+
+		.open & {
+			color: #FFFFFF;
+			&:before {
+				transform: rotate(90deg);
+			}
+		}
+	}
+
+	&__select-menu {
+		position: absolute;
+		display: none;
+		margin: 0 0 20px 0;
+		height: auto;
+		padding: 0;
+		border: none;
+		box-shadow: none;
+		border-radius: 0 0 $border-radius $border-radius;
+		background-color: #1D2124;
+		width: 100%;
+		list-style: none;
+		z-index: 4;
+		max-height: 220px;
+		overflow-y: auto;
+
+		.open & {
+			display: block;
+		}
+
+		& ul {
+			display: block;
+			width: 100%;
+			list-style: none;
+			position: relative;
+			padding: 0;
+			margin: 0;
+
+			& > li {
+				padding: 0;
+				margin: 0;
+
+				& > a {
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: flex-start;
+					align-items: center;
+					padding: 5px 16px;
+					min-height: 45px;
+					border-bottom: 1px solid rgba(#c7c7c7, .2);
+					margin: 0;
+					text-decoration: none;
+					color: #FFFFFF;
+					line-height: 1;
+					letter-spacing: 0.14px;
+					text-align: left;
+					text-shadow: none;
+					font-size: 13px;
+					font-weight: 600;
+					text-transform: none;
+					font-style: normal;
+					background-color: transparent;
+					transition: color .3s ease;
+
+					&:hover,
+					&:active,
+					&:focus,
+					&:active:hover,
+					&:active:focus {
+						text-decoration: none;
+						outline: none;
+						cursor: pointer;
+						color: #37EDFF;
+					}
+				}
+
+				&:first-child a {
+					border-top: 1px solid rgba(#c7c7c7, .2);
+				}
+
+			}
+		}
+
+		.slider & {
+			max-height: 160px;
+		}
+
+	}
+
+	// ----- end select ----
+
+	// ---------------------------------------------- password-strength ------------------------------------------
+	&__password-strength {
+		display: block;
+		width: 100%;
+		height: 0;
+		transition: height .3s ease;
+
+		.form__group--error & {
+			height: 14px;
+		}
+
+		input.ng-empty + & {
+			display: none;
+		}
+
+		& .progress {
+			background-image: none;
+			background-color: transparent;
+			border-radius: 0;
+			margin: 0;
+			padding: 0;
+			height: auto;
+			overflow: visible;
+			position: relative;
+
+			& .progress-bar {
+				background-image: none;
+				font-size: 0;
+				line-height: 0;
+				height: auto;
+				position: relative;
+				box-shadow: none !important;
+
+				&:before {
+					content: '';
+					display: block;
+					position: absolute;
+					left: 0;
+					bottom: 100%;
+					width: 100%;
+					height: 1px;
+				}
+
+				&-danger {
+					background-color: transparent;
+					&:before {
+						background-color: #F46064;
+					}
+					& span {
+						color: #F46064;
+					}
+				}
+				&-warning {
+					background-color: transparent;
+					&:before {
+						background-color: #F9E044;
+					}
+					& span {
+						color: #F9E044;
+					}
+				}
+				&-info {
+					background-color: transparent;
+					&:before {
+						background-color: #36EDFF;
+					}
+					& span {
+						color: #36EDFF;
+					}
+				}
+				&-success {
+					background-color: transparent;
+					&:before {
+						background-color: #46A64D;
+					}
+					& span {
+						color: #46A64D;
+					}
+				}
+
+				& span {
+					font-size: 12px;
+					position: absolute;
+					top: 0;
+					left: 0;
+					line-height: 1.2;
+					width: 100%;
+					text-align: center;
+				}
+			}
+		}
+	}
+	// -----  END password-strength -----------
+
+	// --------------------------------------------------- textarea ----------------------------------------------
+	&__textarea {
+		@extend %elem;
+		line-height: 1.4;
+		padding: 16px 16px 10px;
+		resize: none;
+		height: 150px;
+
+		&::-moz-placeholder {
+			opacity: 1;
+			transition: color .3s ease;
+		}
+		&::-webkit-input-placeholder {
+			color: $input-txt !important;
+			transition: color .3s ease;
+		}
+		&:hover::-webkit-input-placeholder {
+			color: $input-txt-h !important;
+		}
+
+		&:-webkit-autofill {
+			-webkit-box-shadow: inset 0 0 0 100px $input-bg !important;
+			box-shadow: inset 0 0 0 60px $input-bg !important;
+			color: $input-txt !important;
+			-webkit-text-fill-color: $input-txt !important;
+			background: transparent !important;
+			border-radius: $border-radius !important;
+
+			&:hover,
+			&:active,
+			&:focus,
+			&:active:hover,
+			&:active:focus {
+				color: $input-txt-h !important;
+				-webkit-text-fill-color: $input-txt-h !important;
+			}
+
+		}
+
+		.#{$name}__group--error & {
+			~ .form__label {
+				color: $error-text;
+			}
+			~ .form__bar {
+				&:after {
+					background-color: $error-text;
+					width: 100%;
+				}
+			}
+		}
+
+		&:focus {
+			~ .form__label {
+				//color: #37EDFF;
+				color: theme-color('action', 'hover');
+			}
+		}
+		&.ng-not-empty,
+		&:focus {
+			~ .form__label {
+				top: 10px;
+				font-size: 12px;
+			}
+		}
+
+		&:focus {
+			~ .form__bar {
+				&:after {
+					background-color: #38B8F1;
+					width: 100%;
+				}
+			}
+		}
+
+	}
+
+	// ------------ end -----------
+
+	// -------------------------------------------------- alert -------------------------------------------------
+	&__alert {
+		margin: 0 0 30px;
+		//padding: 15px 20px;
+		padding: 25px 50px;
+		border: none;
+		box-shadow: none;
+		//background-color: rgba(#fff, .1);
+		background-color: #262F3A;
+		//border-radius: 3px;
+		border-radius: 10px;
+		//color: #FFFFFF;
+		color: theme-color('text', 'base');
+		font-size: 14px;
+		line-height: 1.2;
+		letter-spacing: 0.5px;
+		font-weight: 600;
+		text-align: left;
+
+		@media (max-width: $screen-sm - 1) {
+			padding: 15px 25px;
+		}
+
+		& a,
+		.cms-default & a:not([class]) {
+			//color: #37EDFF;
+			color: theme-color('link', 'base');
+			text-decoration: underline;
+			font-style: normal;
+			transition: color .3s ease;
+			&:hover,
+			&:active,
+			&:focus,
+			&:active:hover,
+			&:active:focus {
+				//color: #37EDFF;
+				color: theme-color('link', 'base');
+				text-decoration: none;
+				cursor: pointer;
+				outline: none;
+			}
+		}
+	}
+	// -- ENd alert ---
+
+	// ----------------------------------------------- error ----------------------------------------------
+	&__error {
+		margin: 8px 0;
+		display: block;
+		width: 100%;
+		clear: both;
+		font-size: 12px;
+		font-weight: 400;
+		line-height: 1;
+		text-align: left;
+		color: $error-text;
+		padding: 0;
+		letter-spacing: normal;
+	}
+
+	// ---- end error ----
+
+	// ----------------------------------------------- button submit -------------------------------
+	&__button {
+		text-align: center;
+		padding: 0;
+		margin: 16px 0 0;
+
+		//@media (max-width: $screen-sm - 1) {
+		//	font-size: 14px;
+		//	min-height: 40px;
+		//}
+	}
+
+	&__submit {
+		width: 100%;
+
+		@media (max-width: $screen-sm - 1) {
+			font-size: 14px;
+			min-height: 40px;
+		}
+	}
+
+	// ---------------------------- form page (support, confirmation, forgot_password, reset_password, unlock  ----------------------
+	&--page {
+		//max-width: 640px;
+		max-width: 760px;
+		margin: 0 auto;
+		padding: 0;
+	}
+	// ---- END form page ----
+
+	// ----------------------------------------------------------------- links -----------------------------------------
+	&__links {
+		& .auth-links div {
+			//margin-bottom: 7px;
+			margin-bottom: 15px;
+		}
+		margin: 10px 0 0 0;
+		text-align: center;
+		color: #FFFFFF;
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 1.2;
+
+		& a {
+			display: block;
+			margin: 0;
+			//color: #37EDFF;
+			color: theme-color('action', 'hover');
+			font-size: 15px;
+			font-weight: 400;
+			line-height: 1.2;
+			letter-spacing: normal;
+			text-decoration: underline;
+			text-transform: none;
+			transition: color .3s ease;
+			&:hover,
+			&:active,
+			&:focus,
+			&:active:hover,
+			&:active:focus {
+				text-decoration: none;
+				outline: none;
+				//color: #37EDFF;
+				color: theme-color('action', 'hover');
+			}
+		}
+
+	}
+	// ----- END links -----
+}
+// ------------------------ fix IE --------------
+input::-ms-clear,
+input::-ms-reveal {
+	display: none;
+	width: 0;
+	height: 0;
+}
+// ---- END fix IE --------------
+
+// ---------------------------------------------- reCaptcha -----------------------------------------
+.g-recaptcha {
+	margin-top: 0;
+	max-width: 304px;
+	width: 100%;
+	height: 76px;
+	margin-left: auto;
+	margin-right: auto;
+	//transform: translateX(1px);
+	transform: scale(.75);
+
+	//@media (max-width: $screen-sm - 1) {
+	//	//max-width: 260px;
+	//	transform: scale(1);
+	//	//transform-origin: 20% 0;
+	//}
+
+	//@media (max-width: 499px) {
+	//	transform: scale(0.9);
+	//}
+	@media (max-width: 359px) {
+		max-width: 260px;
+		//transform: scale(0.8);
+		transform-origin: 25% 50%;
+	}
+	//margin-bottom: 20px;
+
+	& > div {
+		width: 100% !important;
+		& > div {
+			margin-right: auto;
+			margin-left: auto;
+			//height: 63px !important;
+			//width: 250px !important;
+			width: 304px !important;
+			height: 100% !important;
+			@media (min-width: $screen-sm) {
+				width: 100% !important;
+				height: 100% !important;
+				//height: 78px !important;
+				//width: 304px !important;
+			}
+			& iframe {
+				//width: 304px !important;
+				height: 76px !important;
+				//transform: scale(0.89475);
+				//transform-origin: 0 0;
+				//@media (min-width: $screen-sm) {
+				//	transform: scale(1);
+				//}
+			}
+		}
+	}
+}
+// ------ end reCaptha ------
+.form__group--user_password {
+	.form__password-strength {
+		position: absolute;
+		bottom: -18px;
+		height: 16px;
+	}
+}
+.form__group--user_currency {
+	.form__select {
+		z-index: 7;
+	}
+}
+.form__group--user_gender {
+	.form__select {
+		z-index: 8;
+	}
+}
+
+.form__group--user_captcha {
+	@media (max-width: $screen-sm - 1) {
+		height: 66px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+// input type DATE
+input[type=date]::-webkit-clear-button, /* blue cross */
+input[type=date]::-webkit-inner-spin-button, /* up */
+input[type=date]::-webkit-outer-spin-button, /* down */
+input[type=date]::-webkit-calendar-picker-indicator /* datepicker*/ {
+	display: none;
+}
+input[type=date] {
+	-webkit-appearance: inherit !important;
+}
+// END input type DATE
+
+// ---------
+
+/* eslint-disable */
+CasinoDirectives
+    .directive('casinoFormElement', ['$rootScope', '$http', '$templateCache', 'SYSTEM', 'Pages', '$compile', '$translate', 'PagesService', '$sce',
+        function($rootScope, $http, $templateCache, SYSTEM, Pages, $compile, $translate, PagesService, $sce) {
+        return {
+            restrict: 'E',
+            replace: true,
+            transclude: true,
+            scope: {
+                data: '=data',
+                value: '=ngModel',
+                customFields: '=customFields',
+                errors: '=errors',
+                isDisabled: '<ngDisabled',
+                isProfileForm: '<isProfileForm',
+                isEditMode: '<isEditMode',
+                ngChange: '&ngChange'
+            },
+            link: function(scope, iElement) {
+                scope.checkDateOfBirth = function () {
+                    var v = scope.value.replace(/\/D/, '');
+
+                    // day
+                    if (v.match(/(^[^0-3])|(^3[^0-1])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    } else if ((v.match(/^[0-3]\d$/) !== null)) {
+                        scope.value = v + '/';
+                    }
+
+                    // month
+                    if (v.match(/(^\d{2}\/[^0-1])|(^\d{2}\/1[^0-2])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    } else if ((v.match(/(^\d{2}\/1[0-2]$)|(^\d{2}\/0[0-9]$)/) !== null)) {
+                        scope.value = v + '/';
+                    }
+
+                    // year
+                    if (v.match(/(^\d{2}\/\d{2}\/[^1-2])|(^\d{2}\/\d{2}\.1[^9])|(^\d{2}\/\d{2}\.2[^0])|(^\d{2}\/\d{2}\/20[^0-1])/) !== null) {
+                        scope.value = v.substring(0, v.length - 1);
+                    }
+                }
+
+                SYSTEM.PASSWORD_STRENGTH = SYSTEM.PASSWORD_STRENGTH || {};
+
+                var templateUrl = '',
+                    field_scope = scope.data.scope,
+                    label_translate_key;
+
+                scope.name = (scope.data.scope || '') + '_' + scope.data.field;
+
+                if (field_scope === 'profile') {
+                    field_scope = 'profile/user';
+                }
+
+                if (!field_scope) {
+                    field_scope = 'profile/user';
+                }
+
+                label_translate_key = scope.label = scope.data.label ? scope.data.label : 'activerecord.attributes.' + field_scope + '.' + scope.data.field;
+                scope.placeholder = scope.data.placeholder ? scope.data.placeholder : 'activerecord.attributes.' + field_scope + '.' + scope.data.field;
+
+                if (scope.data.localData.value !== undefined) {
+                    scope.value = scope.data.localData.value;
+                }
+
+                var pathToDirectory = scope.isProfileForm ? 'profile/' : '';
+
+                templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_input.html';
+
+                switch (scope.data.localData.type) {
+                    case 'currency':
+                    case 'country':
+                    case 'nationality':
+                    case 'language':
+                    case 'time_zone':
+                    case 'select':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_select.html';
+                        break;
+                    case 'date':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_date.html';
+                        break;
+                    case 'radio':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_radio.html';
+                        break;
+                    case 'checkbox':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_checkbox.html';
+                        break;
+                    case 'double_email':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_double_email.html';
+                        break;
+                    case 'email':
+                        if (SYSTEM.PASSWORD_SAVE_FORBIDDEN === true && scope.data.field === 'email') {
+                            templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_email_with_fake_password.html';
+                        }
+                        break;
+                    case 'password':
+                        if (SYSTEM.PASSWORD_STRENGTH.AVAILABLE && scope.data.field === 'password') {
+                            templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_password.html';
+                        }
+                        break;
+                    case 'captcha':
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_captcha.html';
+                        break;
+                    default:
+                        templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_input.html';
+                }
+
+                if (scope.data.name == 'terms_acceptance' || scope.data.name == 'age_terms_acceptance') {
+                    templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_terms_acceptance.html';
+
+                    var prepareLabel = function () {
+                        Pages.list({l: $rootScope.currentLocale})
+                            .$promise
+                            .then(function (pages) {
+
+                                var termsMenuItem,
+                                    policyMenuItem;
+
+                                termsMenuItem = pages.find(function(page){
+                                    return PagesService.getLinkMenuItem(page, 'TERMS_AND_CONDITIONS');
+                                });
+
+                                policyMenuItem = pages.find(function(page){
+                                    return PagesService.getLinkMenuItem(page, 'PRIVACY_POLICY');
+                                });
+
+                                var terms_text = '';
+                                if (termsMenuItem && !scope.data.hasCombinedLabel) {
+                                    terms_text += '<a href="' + ($rootScope.currentLocale ? '/' + $rootScope.currentLocale + '/' : '') + termsMenuItem.path + '" target="_blank">';
+                                }
+
+                                if (termsMenuItem && scope.data.hasCombinedLabel) {
+                                    if(SYSTEM.ENABLE_TERMS_TEXT_POPUP) {
+                                        terms_text += '<a href="#" onclick="window.termsModal.open({pageName: \'terms-and-conditions\'});">';
+                                    } else {
+                                        terms_text += '<a href="#terms-and-conditions">';
+                                    }
+                                }
+                                terms_text += $translate.instant('frontend.links.terms_and_conditions');
+
+                                if (termsMenuItem || scope.data.hasCombinedLabel) {
+                                    terms_text += '</a>';
+                                }
+
+                                var privacy_text = '';
+                                if (policyMenuItem && !scope.data.hasCombinedLabel) {
+                                    privacy_text += '<a href="' + ($rootScope.currentLocale ? '/' + $rootScope.currentLocale + '/' : '') + policyMenuItem.path + '" target="_blank">';
+                                }
+
+                                if (policyMenuItem && scope.data.hasCombinedLabel) {
+                                    if(SYSTEM.ENABLE_TERMS_TEXT_POPUP) {
+                                        privacy_text += '<a href="#" onclick="window.termsModal.open({pageName: \'privacy-policy\'});" >';
+                                    } else {
+                                        privacy_text += '<a href="#privacy-policy">';
+                                    }
+                                }
+                                privacy_text += $translate.instant('frontend.links.privacy_policy');
+
+                                if (policyMenuItem || scope.data.hasCombinedLabel) {
+                                    privacy_text += '</a>';
+                                }
+
+                                var and_text = $translate.instant('frontend.and');
+
+                                var text = terms_text + ' ' + and_text + ' ' + privacy_text;
+                                scope.label = $translate.instant(label_translate_key, _.extend(scope.data.localData.translate_value || {}, {text: text}));
+
+                                scope.label = $sce.trustAsHtml(scope.label.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+                            });
+                    };
+                    prepareLabel();
+
+                    $rootScope.$on('$translateChangeSuccess', function () {
+                        prepareLabel();
+                    });
+                }
+
+                if (scope.data.localData.template) {
+                    templateUrl = '/app/Blocks/FormElements/' + pathToDirectory + '_' + scope.data.localData.template + '.html';
+                }
+
+                $http.get('/app/Blocks/FormElements/' + pathToDirectory + '_element.html', {cache: $templateCache}).success(function(tplContent) {
+                    $http.get(templateUrl, {cache: $templateCache}).success(function(tplContentElement) {
+                        iElement.replaceWith($compile(tplContent.replace('<!--element-->', tplContentElement))(scope));
+                    });
+                });
+            },
+            controller: ['$scope', function ($scope) {
+                $scope.load = function() {
+                    var test = document.createElement('input');
+                    test.type = 'date';
+                    if (test.type === 'text') {
+                        // date input not supported
+                        $scope.dateSupport = 'text';
+                        $scope.isShowlabel = true;
+                    }
+                    else {
+                        // date input supported
+                        $scope.dateSupport = 'date';
+                        $scope.isShowlabel = false;
+                    }
+                };
+
+                if ($scope.data.localData.type === 'date') {
+                    $scope.open = function ($event) {
+                        $event.preventDefault();
+                        $event.stopPropagation();
+
+                        $scope.opened = true;
+                    };
+
+                    $scope.datepickerOptions = {
+                        'show-button-bar': false,
+                        showWeeks: false
+                    };
+                }
+            }]
+        };
+    }]);
+// ---------=-------
